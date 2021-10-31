@@ -96,6 +96,7 @@ void KeyinputManager::UpdataMouseCursor(HWND hwnd)
  void KeyinputManager::Initialize(HWND mhwnd)
  {
 	 hwnd = mhwnd;
+	
  }
 
  void KeyinputManager::Update()

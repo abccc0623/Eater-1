@@ -37,7 +37,7 @@ public:
 public:
 	///클라이언트 에서 만질 함수들
 	///게임 엔진 관련 함수들
-	void Initialize(HWND gHwnd);//초기화
+	void Initialize(HWND gHwnd,bool mConsoleDebug = true);//초기화
 	void Update();				//엔진 가동
 	void Finish();				//엔진 중지
 	void OnResize(float Change_Width, float Change_Height); //리사이즈
@@ -70,11 +70,13 @@ private:
 	LoadManager*		mLoadManager;		//로드 관련 매니저
 	SceneManager*		mSceneManager;		//스크린 관리 매니저
 	KeyinputManager*	mKeyManager;		//키인풋 관련 매니저
+
 private:
 	///클라쪽에서 받아야 하는 데이터
 	HWND mHwnd; //핸들
 	int WinSizeWidth;	//윈도우 사이즈 가로
 	int WinSizeHeight;	//윈도우 사이즈 세로
+	bool ConsoleDebug;
 private:
 	///그래픽 엔진
 	GraphicEngine* NowGraphicEngine;

@@ -44,7 +44,7 @@ GameEngine::~GameEngine()
 }
 
 ///게임 엔진 관련
-void GameEngine::Initialize(HWND Hwnd)
+void GameEngine::Initialize(HWND Hwnd, bool mConsoleDebug)
 {
 	//클라쪽에서 넘겨준 데이터 받기
 	mHwnd = Hwnd;
@@ -64,7 +64,7 @@ void GameEngine::Initialize(HWND Hwnd)
 
 	//매니저들 초기화
 	mKeyManager->Initialize(mHwnd);
-	mDebugManager->Initialize();
+	mDebugManager->Initialize(mKeyManager,mConsoleDebug);
 	mSceneManager->Initialize();
 	mObjectManager->Initialize(mHwnd);
 	//테스트용 이곳에 그래픽엔진을 넘겨주면된다
@@ -74,6 +74,9 @@ void GameEngine::Initialize(HWND Hwnd)
 
 	pTest_Engine->Initialize(Hwnd, WinSizeWidth, WinSizeHeight);
 	pTest_Engine->SetDebug(true);
+
+	
+	mDebugManager->printStart();
 }
 
 void GameEngine::Update()
@@ -82,6 +85,7 @@ void GameEngine::Update()
 	mKeyManager->Update();
 	mSceneManager->Update();
 	mObjectManager->PlayUpdate();
+	mDebugManager->Update();
 	
 
 
@@ -106,6 +110,7 @@ void GameEngine::Update()
 
 	//랜더링이 끝나고 오브젝트 Delete
 	mObjectManager->DeleteObject();
+	mObjectManager->DeleteRenderQueue();
 }
 
 void GameEngine::Finish()
@@ -125,6 +130,7 @@ void GameEngine::OnResize(float Change_Width, float Change_Height)
 		
 	//그래픽 엔진의 리사이즈 함수를 넣으면 될듯
 	pTest_Engine->On_Resize(WinSizeWidth, WinSizeHeight);
+	mDebugManager->Print("윈도우 사이즈 변경",DebugManager::MSG_TYPE::MSG_ENGINE);
 }
 
 ///오브젝트 생성 삭제
@@ -133,10 +139,13 @@ GameObject* GameEngine::Instance(std::string ObjName)
 	//오브젝트 생성
 	GameObject* temp = new GameObject();
 	mObjectManager->PushCreateObject(temp);
-
+	temp->Name = ObjName;
 	//Transform 은 기본으로 넣어준다
-	temp->AddComponent<Transform>();
+	Transform* Tr = temp->AddComponent<Transform>();
+	temp->transform = Tr;
 
+
+	mDebugManager->Print(ObjName, DebugManager::MSG_TYPE::MSG_CREATE);
 	return temp;
 }
 
@@ -148,14 +157,23 @@ void GameEngine::Destroy(GameObject* obj)
 /// 스크린 관련 함수들
 void GameEngine::PushScene(Scene* mScene, std::string name)
 {
+	std::string mStr = "씬 생성 :" + name;
+	mDebugManager->Print(mStr,DebugManager::MSG_TYPE::MSG_ENGINE);
 	mSceneManager->PushScene(mScene,name);
 }
 
 void GameEngine::ChoiceScene(std::string name)
 {
+	std::string mStr = "현재 씬 선택 :" + name;
+	mDebugManager->Print(mStr, DebugManager::MSG_TYPE::MSG_ENGINE);
+	
+	//씬 선택후 이전 씬 의 정보들을 모두지움
+	mObjectManager->AllDeleteObject();
+	mObjectManager->ClearFunctionList();
 	mSceneManager->ChoiceScene(name);
-	mSceneManager->SceneStart();
 
+	//씬 선택이 되면 씬자체의 Awack와 Start 함수 실행 그리고나서 컨퍼넌트의 Awack와 Start 도 실행 
+	mSceneManager->SceneStart();
 	mObjectManager->PlayStart();
 }
 
@@ -163,6 +181,7 @@ void GameEngine::ChoiceScene(std::string name)
 void GameEngine::LoadMesh(std::string mMeshName, bool Scale, bool LoadAnime)
 {
 	mLoadManager->LoadMesh(mMeshName, Scale, LoadAnime);
+	mDebugManager->Print(mMeshName, DebugManager::MSG_TYPE::MSG_LOAD);
 }
 
 void GameEngine::LoadMeshPath(std::string mPath)

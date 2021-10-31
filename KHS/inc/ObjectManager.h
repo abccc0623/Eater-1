@@ -81,22 +81,9 @@ private:
 	///그래픽엔진쪽으로 던저줄 데이터들
 	std::queue<MeshData*> RenderData;
 	std::vector<DHParser::Mesh> DHRenderData;
+	
 	GlobalData* Global;
 
-
-	/// 테스트용
-	////////////////////////////////////////////
-	//std::string MeshName;
-	//FBXModel* MeshFilterData;
-	//
-	//DH3DEngine* pTest_Engine;
-	//
-	//OneFrameData* pTest_OFD;
-	//SharedRenderData* pTest_SRD;
-	//DHParser::Mesh* pTest_Mesh;
-	//
-	//void Test();
-	////////////////////////////////////////////
 
 
 	/// 시작단계 한번만 실행됨

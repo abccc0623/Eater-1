@@ -24,14 +24,16 @@ public:
 	//스크린 매니저 초기화
 	void Initialize();
 
-	//생성된 스크린 넣기
+	//생성된 씬 넣기
 	void PushScene(Scene* mScene,std::string SceneName);
 
-	//스크린 선택
+	//씬 선택
 	void ChoiceScene(std::string SceneName);
 
-	//스크린의 Awack Start함수를 실행
-	void SceneStart();		
+	//씬의 Awack Start함수를 실행
+	void SceneStart();
+	//씬이 다른씬으로 넘어가기전 마무리 실행
+	void SceneEnd();
 
 
 	//스크린 매니저 업데이트

@@ -6,6 +6,7 @@ GameObject::GameObject()
 	IsActive = true;	//모든 컨퍼넌트 사용여부
 	Name = "GameObject";
 	OneMeshData = new MeshData();
+	transform = nullptr;
 }
 
 GameObject::~GameObject()

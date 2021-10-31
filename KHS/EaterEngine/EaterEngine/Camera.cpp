@@ -21,7 +21,9 @@ Camera::Camera()
 
 Camera::~Camera()
 {
+	if (MainCam == this) { MainCam == nullptr; }
 
+	CamList[MyIndex] = nullptr;
 }
 
 void Camera::Awake()

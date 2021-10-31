@@ -28,15 +28,14 @@ public:
 		std::function<void()> mEnd
 	);
 
-	void TestAddFunction()
-	{
-		
-	}
 
-	virtual void Awake();
-	virtual void Start();
-	virtual void Update();
-	virtual void End();
+	//씬이 생성될떄 호출
+	virtual void Awake()=0;
+	virtual void Start()=0;
+	//매프레임 호출
+	virtual void Update()=0;
+	//씬이 종료되거나 다음씬으로 넘어갈떄 실행
+	virtual void End()=0;
 
 
 	std::string Name;

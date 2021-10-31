@@ -46,10 +46,11 @@ public:
 	int GetComponentCount();
 	
 	MeshData* OneMeshData;
+	Transform* transform;
 public:
 	//컨퍼넌트를 추가 시킨다
 	template<typename T>
-	EATER_ENGINEDLL void AddComponent(typename std::enable_if<std::is_base_of<Component, T>::value, bool>::type t = std::is_base_of<Component, T>::value);
+	EATER_ENGINEDLL T* AddComponent(typename std::enable_if<std::is_base_of<Component, T>::value, bool>::type t = std::is_base_of<Component, T>::value);
 
 	//컨퍼넌트를 가져온다
 	template<typename T>
@@ -75,7 +76,7 @@ private:
 };
 
 template<typename T>
-inline void GameObject::AddComponent(typename std::enable_if<std::is_base_of<Component, T>::value, bool>::type t)
+inline T* GameObject::AddComponent(typename std::enable_if<std::is_base_of<Component, T>::value, bool>::type t)
 {
 	//이함수는 무조건 Component를 상속받은 클래스만 들어올수있다
 	//그래서 Component 안에 함수만 사용함
@@ -135,6 +136,8 @@ inline void GameObject::AddComponent(typename std::enable_if<std::is_base_of<Com
 		ObjectManager::PushEndUpdate(ConponentBox);
 		ConponentBox->FUNCTION_MASK |= END_UPDATE;
 	}
+
+	return ConponentBox;
 }
 
 template<typename T>

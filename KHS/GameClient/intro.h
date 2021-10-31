@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-class Transform;
 class  intro :public Scene
 {
 public:
@@ -13,6 +12,5 @@ public:
 
 private:
 	GameObject* testobj;
-	Transform* t;
 };
 

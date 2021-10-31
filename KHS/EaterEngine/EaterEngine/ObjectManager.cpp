@@ -71,14 +71,19 @@ void ObjectManager::PushDeleteObject(GameObject* obj)
 
 void ObjectManager::AllDeleteObject()
 {
-	//시작 함수 포인터 리스트 삭제
-	AwakeFunction.Clear();
-	StartFunction.Clear();
+	int count = ObjectList.size();
+	for (int i = 0; i < count; i++)
+	{
+		int comSize =  ObjectList[i]->GetComponentCount();
+		for (int j = 0; j < comSize; j++)
+		{
+			DeleteComponent(ObjectList[i]->GetDeleteComponent(j));
+		}
+	}
 
-	//업데이트 함수 포인터 리스트 삭제
-	StartUpdate.Clear();
-	Update.Clear();
-	EndUpdate.Clear();
+
+	ObjectList.clear();
+	//DHRenderData.clear();
 }
 
 void ObjectManager::Initialize(HWND _g_hWnd)
@@ -154,6 +159,7 @@ void ObjectManager::PlayUpdate()
 	CreateRenderQueue();
 	CreateDHRenderQueue();
 
+
 	///모든 오브젝트 업데이트 완료
 }
 void ObjectManager::DeleteRenderQueue()
@@ -185,8 +191,14 @@ void ObjectManager::CreateRenderQueue()
 
 void ObjectManager::ClearFunctionList()
 {
+	AwakeFunction.Clear();
+	StartFunction.Clear();
+
 	StartUpdate.Clear();
+	TransformUpdate.Clear();
+	PhysicsUpdate.Clear();
 	Update.Clear();
+	EndUpdate.Clear();
 }
 
 void ObjectManager::DeleteObject()

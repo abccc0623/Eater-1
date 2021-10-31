@@ -55,6 +55,14 @@ void SceneManager::SceneStart()
 	NowScene->Start();
 }
 
+void SceneManager::SceneEnd()
+{
+	if (NowScene != nullptr)
+	{
+		NowScene->End();
+	}
+}
+
 void SceneManager::Update()
 {
 	//스크린 먼저 업데이트하고 그다음 컨퍼넌트들 업데이트
